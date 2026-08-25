@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Agency Partner Access | Registered Federal Contractors Portal</title>
+<meta name="robots" content="noindex">
+<style>
+:root{--navy:#07142f;--ink:#f7f9ff;--muted:#a9b6cc;--line:rgba(255,255,255,.14);--panel:rgba(255,255,255,.065);--gold:#d8b55f;--danger:#ff9aa5}*{box-sizing:border-box}html,body{height:100%}body{margin:0;font:400 16px/1.5 Arial,sans-serif;color:var(--ink);background:radial-gradient(circle at 12% 4%,rgba(71,126,211,.32),transparent 28%),linear-gradient(150deg,#113573 0%,var(--navy) 52%,#020713 100%)}button,input{font:inherit}.shell{width:min(1040px,calc(100% - 24px));min-height:100vh;min-height:100dvh;margin:auto;padding:20px 0;display:flex;flex-direction:column;justify-content:center;gap:14px}.glass{background:var(--panel);border:1px solid var(--line);box-shadow:0 22px 60px rgba(0,0,0,.28);backdrop-filter:blur(18px)}.brand{text-align:center;font:400 1.15rem Georgia,serif;flex-shrink:0}.brand small{display:block;color:var(--muted);font:700 .6rem Arial;letter-spacing:.14em;text-transform:uppercase;margin-top:3px}.panel{border-radius:22px;padding:34px 42px}.eyebrow{font-size:.68rem;font-weight:800;letter-spacing:.17em;text-transform:uppercase;color:var(--gold);text-align:center}h1{font-family:Georgia,serif;font-weight:400;font-size:2.1rem;margin:8px 0 7px;text-align:center}.sub{color:var(--muted);text-align:center;max-width:640px;margin:0 auto 22px;font-size:.96rem}.row-label{font-size:.64rem;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:#8293b0;margin:0 0 10px}.grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}.field{display:flex;flex-direction:column;gap:7px}label{font-size:.64rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#a9b8d0}input{width:100%;border:1px solid var(--line);border-radius:10px;background:#081936;color:#fff;padding:.95rem 1.05rem;outline:none;letter-spacing:.02em;font-size:1rem}input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(216,181,95,.12)}input::placeholder{color:#6e7e9c}input#code{letter-spacing:.06em}.url-input{display:flex;align-items:stretch;border:1px solid var(--line);border-radius:10px;background:#081936;overflow:hidden}.url-input:focus-within{border-color:var(--gold);box-shadow:0 0 0 3px rgba(216,181,95,.12)}.url-prefix{display:flex;align-items:center;padding:0 0 0 1.05rem;color:#dbe6f7;white-space:nowrap;font-size:1rem}.url-input input{min-width:0;border:0;border-radius:0;padding-left:.3rem}.url-input input:focus{border:0;box-shadow:none}.section+.section{margin-top:22px}.msg{min-height:22px;color:var(--danger);font-size:.86rem;margin-top:14px;text-align:center}.actions{margin-top:22px}.btn{width:100%;border:0;border-radius:10px;padding:1.05rem 1.2rem;cursor:pointer;font-weight:800;letter-spacing:.07em;text-transform:uppercase;font-size:.84rem}.primary{background:linear-gradient(135deg,#f7f8fa,var(--gold));color:#0d2149}.btn:disabled{opacity:.55;cursor:not-allowed}@media(max-width:720px){.grid{grid-template-columns:1fr 1fr}}@media(max-width:480px){.grid{grid-template-columns:1fr}.panel{padding:26px 22px}}
+</style>
+</head>
+<body>
+<div class="shell">
+<div class="brand">Registered Federal Contractors Portal<small>Agency Partner Access</small></div>
+<main class="panel glass">
+<div class="eyebrow">RFCP Agency Pilot Program</div>
+<h1>Agency Login</h1>
+<p class="sub">One form: your details, the business you're bringing in, and the access code from your invitation. This starts that business's RFCP profile immediately — no trial, no $99/mo charge.</p>
+<form id="gateForm" novalidate>
+<div class="section">
+<div class="row-label">Your Details</div>
+<div class="grid">
+<div class="field"><label for="fullName">Name</label><input id="fullName" required autocomplete="name" placeholder="Jane Smith"></div>
+<div class="field"><label for="agencyName">Agency Name</label><input id="agencyName" required autocomplete="organization" placeholder="Example SBDC"></div>
+<div class="field"><label for="code">Promo Code</label><input id="code" required autocomplete="off" placeholder="e.g. AGENCY30" style="text-transform:uppercase"></div>
+</div>
+</div>
+<div class="section">
+<div class="row-label">Business Being Introduced</div>
+<div class="grid">
+<div class="field"><label for="businessName">Business Name</label><input id="businessName" required autocomplete="organization" placeholder="Acme Infrastructure Services LLC"></div>
+<div class="field"><label for="businessEmail">Business Email</label><input id="businessEmail" required type="email" inputmode="email" autocomplete="email" autocapitalize="none" spellcheck="false" placeholder="jane@acme.com"></div>
+<div class="field"><label for="website">Business Website URL</label><div class="url-input"><span class="url-prefix" aria-hidden="true">https://</span><input id="website" required type="text" inputmode="url" autocomplete="url" autocapitalize="none" spellcheck="false" placeholder="www.acme.com"></div></div>
+</div>
+</div>
+<div class="msg" id="message" aria-live="polite"></div>
+<div class="actions"><button class="btn primary" id="submitButton" type="submit">Continue</button></div>
+</form>
+</main>
+</div>
+<script>
+(()=>{'use strict';
+const $=id=>document.getElementById(id),form=$('gateForm'),button=$('submitButton'),message=$('message'),fullName=$('fullName'),agencyName=$('agencyName'),businessName=$('businessName'),businessEmail=$('businessEmail'),website=$('website'),code=$('code');
+const emailOk=value=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+const websiteUrl=value=>`https://${String(value||'').trim().replace(/^https?:\/\//i,'').replace(/^\/+/,'')}`;
+// Same live-strip as intake.html's Universal Intake -- a pasted full URL
+// carries its own https://, which would otherwise double up against the
+// fixed prefix chip beside the field.
+website.addEventListener('input',()=>{const cleaned=website.value.replace(/^\s*https?:\/\//i,'').replace(/^\/+/,'');if(cleaned!==website.value)website.value=cleaned;});
+form.addEventListener('submit',async event=>{
+  event.preventDefault();message.textContent='';
+  const nameValue=fullName.value.trim(),agencyValue=agencyName.value.trim(),bizNameValue=businessName.value.trim(),bizEmailValue=businessEmail.value.trim().toLowerCase(),codeValue=code.value.trim();
+  if(!nameValue){message.textContent='Enter your name.';return}
+  if(!agencyValue){message.textContent='Enter your agency name.';return}
+  if(!bizNameValue){message.textContent='Enter the business name.';return}
+  if(!emailOk(bizEmailValue)){message.textContent='Enter a valid business email.';return}
+  let parsedUrl;
+  try{parsedUrl=new URL(websiteUrl(website.value))}catch{message.textContent='Enter a valid business website name.';return}
+  if(parsedUrl.protocol!=='https:'||!parsedUrl.hostname||!parsedUrl.hostname.includes('.')){message.textContent='Enter a valid business website name.';return}
+  if(!codeValue){message.textContent='Enter your promo code.';return}
+  button.disabled=true;button.textContent='CHECKING…';
+  try{
+    const accessResponse=await fetch('/api/advisor-access',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:codeValue,name:nameValue,agency_name:agencyValue,business_name:bizNameValue})});
+    const accessResult=await accessResponse.json().catch(()=>({}));
+    if(!accessResponse.ok||!accessResult.ok)throw new Error(accessResult.error||'That code is not valid.');
+    const intakeResponse=await fetch('/api/capability-profile',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'start',contact_name:nameValue,business_name:bizNameValue,business_email:bizEmailValue,website:parsedUrl.href})});
+    const intakeResult=await intakeResponse.json().catch(()=>({}));
+    if(!intakeResponse.ok||!intakeResult.ok)throw new Error(intakeResult.error||'The business profile could not be started.');
+    location.assign('/profile-building.html')
+  }catch(error){
+    message.textContent=error.message;button.disabled=false;button.textContent='Continue'
+  }
+})
+})();
+</script>
+</body>
+</html>
